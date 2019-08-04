@@ -1,0 +1,48 @@
+NEW_ROUND:
+
+State = NEW_ROUND
+proposer = getProposersAddress(blockchain)
+if (currentValidator == proposer)
+    block = createBlock(transaction_pool)
+    broadcastBlock(block)
+    State = PRE_PREPARED
+
+
+PRE_PREPARED:
+
+ON message.type == PRE_PREPARE
+    verifyBlock(message.block)
+    verifyValidator(message.block)
+    broadcastPrepare(message.block)
+    State = PREPARED
+
+PREPARED:
+
+ON message.type == PREPARE
+    verifyPrepare(message.prepare)
+    verifyValidator(message.prepare)
+    preparePool.add(message.prepare)
+
+    if (preparePool.length > 2F+1)
+        broadcastCommit(message.prepare)
+    
+    State = COMMITTED
+
+COMMITTED:
+
+ON message.type == COMMIT
+    verifyCommit(message.commit)
+    verifyValidator(message.commit)
+    commitPool.add(message.commit)
+
+    if (commitPool.length > 2F+1)
+        commitList = commitPool.getCommits()
+        block.append(commitList)
+        blockchain.append(block)
+    
+    State = FINAL_COMMITTED
+
+FINAL_COMMITTED:
+
+proposer = getProposersAddress()
+
