@@ -284,7 +284,7 @@ class P2pserver {
             this.messagePool.addMessage(data.message);
 
             // send to other nodes
-            this.broadcastRoundChange(message);
+            this.broadcastRoundChange(data.message);
 
             // if enough messages are received, clear the pools
             if (
