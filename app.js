@@ -50,6 +50,7 @@ app.get("/blocks", (req, res) => {
 app.post("/transact", (req, res) => {
   const { data } = req.body;
   const transaction = wallet.createTransaction(data);
+  transactionPool.addTransaction(transaction);
   p2pserver.broadcastTransaction(transaction);
   res.redirect("/transactions");
 });
