@@ -32,7 +32,11 @@ Third node:
 SECRET="NODE2" P2P_PORT=5002 HTTP_PORT=3002 PEERS=ws://localhost:5001,ws://localhost:5000 node app
 ```
 
-*Note the ports are different since all the nodes are run on the same pc and the peers contains a comma seperated list of socket addresses neighbouring nodes*
+*Note the ports are different since all the nodes are running on the same pc and the `PEERS` variable contains a comma seperated list of socket addresses neighbouring nodes*
+
+*Also note that in the ports **300X** are HTTP Ports and `localhost:300X/endpoint-name` should be used to send request to the backend.*
+
+*Ports **500X** are for socket servers and are used to create socket connection between different nodes.*
 
 
 ### Create transactions
